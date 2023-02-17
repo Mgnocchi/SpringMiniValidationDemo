@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import org.springframework.stereotype.Component;
 
 @Component
-public class postStudent {
+public class PostStudent {
     @NotBlank(message = "name can't be blank")
     String Name;
 

@@ -51,19 +51,23 @@ public class App {
 
         // Spring implementation: I believe this is an approximation of the process that is made under the hood during controller validation
         System.out.println("Experimenting with an empty student-like bean");
-        postStudent postStudent = context.getBean(org.example.postStudent.class);
+        PostStudent postStudent = context.getBean(PostStudent.class);
 
         DataBinder binder = new DataBinder(postStudent);
         MutablePropertyValues postStudentProperties = new MutablePropertyValues();
-        postStudentProperties.add("name","sgfdg");
+        postStudentProperties.add("name","giorgio");
         binder.addValidators(new org.springframework.validation.Validator() {
             @Override
             public boolean supports(Class<?> clazz) {
-                return postStudent.class.isAssignableFrom(clazz);
+                return PostStudent.class.isAssignableFrom(clazz);
             }
             @Override
             public void validate(Object target, Errors errors) {
                 ValidationUtils.rejectIfEmptyOrWhitespace(errors,"Name","field.required","Name can't be blank");
+                String name = ((PostStudent) target).getName();
+                if (name != null && name.equals("giorgio")) {
+                    errors.rejectValue("Name","field.invalid","Ma che nome è giorgio!?");
+                }
             }
         });
         binder.bind(postStudentProperties);
